@@ -1,6 +1,5 @@
 import React from 'react'
 import Spinner from '../layout/Spinner';
-
 import PropTypes from 'prop-types'
 import UserItem from './UserItem';
 
@@ -21,7 +20,7 @@ import UserItem from './UserItem';
     }
 }
 Users.PropTypes = {
-    user : PropTypes.array.isRequired,
+    users : PropTypes.array.isRequired,
     loading : PropTypes.bool.isRequired
 }
 const userStyle = {
