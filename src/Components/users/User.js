@@ -1,21 +1,15 @@
-import React, { Fragment,Component } from 'react';
+import React, { Fragment,useEffect,useContext } from 'react';
 import Spinner from '../layout/Spinner'
-import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import Repos from '../repos/Repos';
-export class User extends Component {
-    componentDidMount(){
-        this.props.getUser(this.props.match.params.login)
-        this.props.getUserRepos(this.props.match.params.login)
-    }
-    static propTypes = {
-        loading : PropTypes.bool,
-        user: PropTypes.object.isRequired,
-        repos: PropTypes.array.isRequired,
-        getUser: PropTypes.func.isRequired,
-        getUserRepos: PropTypes.func.isRequired
-    }
-    render() {
+import GithubContext from '../../context/github/githubContext'
+const User = ({match}) => {
+    const githubContext = useContext(GithubContext)
+    const {user,loading ,getUser,getUserRepos,repos} = githubContext
+    useEffect(() =>{
+        getUser(match.params.login)
+        getUserRepos(match.params.login)
+    },[])
         const {
             name,
             company,
@@ -30,8 +24,7 @@ export class User extends Component {
             public_repos,
             public_gists,
             hireable
-          } = this.props.user;
-          const {loading, repos} = this.props;
+          } = user;  
           if(loading) return <Spinner/>;
         return (
             <Fragment>
@@ -57,7 +50,7 @@ export class User extends Component {
                                 Visit Github Profile
                             </a>
                             <ul>
-                                    <li>
+                                  <li>
                                     {login &&
                                     <Fragment>
                                     <strong>Username: </strong>{login}
@@ -74,7 +67,7 @@ export class User extends Component {
                                     <Fragment>
                                     <strong>Website: </strong>{blog}
                                     </Fragment>}
-                                    </li>
+                                 </li>
                             </ul>                  
                                </div>
                         </div>
@@ -87,7 +80,5 @@ export class User extends Component {
                         <Repos repos={repos}/>
             </Fragment>
         );
-    }
 }
-
 export default User;
